@@ -1,12 +1,37 @@
 ﻿@model IQueryable<tblTask>
 
-@foreach (var task in Model)
-{
-    @Html.Partial("_TaskPartial", task)
-    @*<li class="checkbox">
-            <input type="checkbox"> <span>@task.Name</span>
-            <button type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </li>*@
-}
+
+<div class="tasks-todo">
+    <h4>
+        To do:
+    </h4>
+
+    <ul class="nav nav-pills nav-stacked" id="tasksTodo">
+        @foreach (var task in Model.Where(x => !x.IsCompleted))
+        {
+            @Html.Partial("_TaskPartial", task)
+        }
+    </ul>
+
+    <div class="form-group">
+        <form action="@Url.Action("_AddTask","Home")" id="formAddTask">
+            <input type="text" class="form-control" name="taskName" id="taskName" placeholder="Add new task">
+        </form>
+    </div>
+</div>
+
+<hr />
+
+<div class="tasks-done">
+    <h4>
+        Done:
+    </h4>
+    <ul class="nav nav-pills nav-stacked" id="tasksDone">
+        @foreach (var task in Model.Where(x => x.IsCompleted))
+        {
+            @Html.Partial("_TaskPartial", task)
+        }
+    </ul>
+</div>
+
+

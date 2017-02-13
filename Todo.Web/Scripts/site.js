@@ -5,23 +5,24 @@
     // --------------------------------------------------------------------
 
 
-    $('#formAddTask').submit(function () {
+    $(document).on('submit', '#formAddTask', function () {
         var url = $(this).attr('action');
         var taskName = $('#taskName').val();
         var groupId = $('#groups li.active').data('groupid');
-
         var groupCounts = $('#groups li.active .badge').text().split('/');
+
+        console.log(groupId);
 
         $.ajax({
             url: url,
             data: { taskName: taskName, groupId: groupId },
             success: function (result) {
-                $('#tasks').prepend(result);
+                $('#tasksTodo').prepend(result);
                 $('#taskName').val('');
                 $('#groups li.active .badge').html(groupCounts[0] + '/' + (Number(groupCounts[1]) + 1));
             },
             error: function (result) {
-                alert(result);
+                console.log(result);
             }
         });
 
@@ -37,7 +38,7 @@
     // --------------------------------------------------------------------
 
 
-    $('#groups li').on('groupActivated', function () {
+    $('#groups').on('groupActivated', 'li', function () {
         var groupId = $(this).data('groupid');
         var url = $(this).data('gettasksurl');
 
@@ -45,10 +46,10 @@
             url: url,
             data: { groupId: groupId },
             success: function (result) {
-                $('#tasks').html(result);
+                $('#tasksMain').html(result);
             },
             error: function (result) {
-                alert(result);
+                console.log(result);
             }
         });
     });
@@ -60,7 +61,8 @@
 
         // if cliecked element is close button
         // dont add active class to 'li' element
-        if (e.target !== this) {
+        //if (e.target !== this) {
+        if ($(e.target).hasClass('icon-close')) {
 
         } else {
             $(this).parent('li').addClass('active').trigger('groupActivated').siblings().removeClass('active');
@@ -77,9 +79,11 @@
             success: function (result) {
                 $('#groups').prepend(result);
                 $('#groupName').val('');
+                // select first group, when page first load
+                selectFirstGroup();
             },
             error: function (result) {
-                alert(result);
+                console.log(result);
             }
         });
 
@@ -103,7 +107,7 @@
 
             },
             error: function (result) {
-                alert(result);
+                console.log(result);
             }
         });
 
@@ -115,5 +119,5 @@
 
 // select first group
 function selectFirstGroup() {
-    $('#groups li').first().addClass('active').trigger('groupActivated');
+    $('#groups li').first().addClass('active').trigger('groupActivated').siblings().removeClass('active');
 }
