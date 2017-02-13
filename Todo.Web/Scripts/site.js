@@ -5,13 +5,14 @@
     // --------------------------------------------------------------------
 
 
-    $(document).on('submit', '#formAddTask', function () {
+    // 
+    // add task
+
+    $('#tasksMain').on('submit', '#formAddTask', function () {
         var url = $(this).attr('action');
         var taskName = $('#taskName').val();
         var groupId = $('#groups li.active').data('groupid');
         var groupCounts = $('#groups li.active .badge').text().split('/');
-
-        console.log(groupId);
 
         $.ajax({
             url: url,
@@ -27,7 +28,41 @@
         });
 
         return false;
-    })
+    });
+
+    // 
+    // update task status
+
+    $('#tasksMain').on('change', 'input[type="checkbox"]', function () {
+        var url = $(this).data('task-status-update-url');
+        var task = $(this).parent('li');
+        var groupCounts = $('#groups li.active .badge').text().split('/');
+        var isCompleted = this.checked;
+
+        console.log(isCompleted);
+
+        $.ajax({
+            url: url,
+            data: { isCompleted: isCompleted, updateField: 'is_completed' },
+            success: function (result) {
+
+                task.remove();
+
+                if (isCompleted) {
+                    $('#tasksDone').prepend(result);
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                } else {
+                    $('#tasksTodo').prepend(result);
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                }
+
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+
+    });
 
 
 
@@ -40,7 +75,7 @@
 
     $('#groups').on('groupActivated', 'li', function () {
         var groupId = $(this).data('groupid');
-        var url = $(this).data('gettasksurl');
+        var url = $(this).data('get-tasks-url');
 
         $.ajax({
             url: url,
@@ -92,7 +127,7 @@
 
     $('#groups').on('click', '.close', function () {
         var groupId = $(this).data('groupid');
-        var deleteUrl = $(this).data('deleteurl');
+        var deleteUrl = $(this).data('group-delete-url');
 
         $.ajax({
             url: deleteUrl,

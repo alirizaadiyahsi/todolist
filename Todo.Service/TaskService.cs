@@ -25,6 +25,13 @@ namespace Todo.Service
 
             return tasks;
         }
+
+        public tblTask FindTask(int id)
+        {
+            var task = _context.tblTasks.Find(id);
+
+            return task;
+        }
         #endregion
 
         #region groups
@@ -52,6 +59,7 @@ namespace Todo.Service
             _context.tblGroups.Attach(groupToDelete);
             _context.Entry(groupToDelete).State = EntityState.Deleted;
         }
+
         #endregion
     }
 }

@@ -60,6 +60,20 @@ namespace Todo.Web.Controllers
             return PartialView("_TaskPartial", task);
         }
 
+        public ActionResult _UpdateTask(int id, bool isCompleted, string updateField)
+        {
+            var task = _taskService.FindTask(id);
+
+            if (updateField == "is_completed")
+            {
+                task.IsCompleted = isCompleted;
+            }
+
+            _unitOfWork.SaveChanges();
+
+            return PartialView("_TaskPartial", task);
+        }
+
         public ActionResult _TaskList(int groupId)
         {
             var tasks = _taskService.GetAllTasks()
