@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Tasks";
+}
+
+@model IQueryable<tblGroup>
+
+<div class="row">
+    <div class="col-md-3 left-group">
+        <div>
+            <h3>
+                Groups
+            </h3>
+        </div>
+
+        <ul class="nav nav-pills nav-stacked" id="groups">
+            @foreach (var group in Model)
+            {
+                @Html.Partial("_GroupPartial", group)
+            }
+        </ul>
+        <hr />
+        <div class="form-group">
+            <form action="@Url.Action("_AddGroup","Home")" id="formAddGroup">
+                <input type="text" class="form-control" name="groupName" id="groupName" placeholder="Add new category">
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6 tasks-main">
+        <h3>
+            Tasks
+        </h3>
+
+        <ul class="nav nav-pills nav-stacked" id="tasks"></ul>
+
+        <hr />
+        <div class="form-group">
+            <form action="@Url.Action("_AddTask","Home")" id="formAddTask">
+                <input type="text" class="form-control" name="taskName" id="taskName" placeholder="Add new task">
+            </form>
+        </div>
+    </div>
+    @*<div class="col-md-3 side-category right-category">
+            <h3>
+                Tamamlananlar
+            </h3>
+            <ul class="nav nav-pills nav-stacked">
+                <li><a href="javascript:void(0)">Kategori 1</a></li>
+                <li><a href="javascript:void(0)">Kategori 3</a></li>
+                <li><a href="javascript:void(0)">Kategori 4</a></li>
+                <li><a href="javascript:void(0)">Kategori 6</a></li>
+            </ul>
+        </div>*@
+</div>

@@ -1,0 +1,12 @@
+﻿@model IQueryable<tblTask>
+
+@foreach (var task in Model)
+{
+    @Html.Partial("_TaskPartial", task)
+    @*<li class="checkbox">
+            <input type="checkbox"> <span>@task.Name</span>
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </li>*@
+}

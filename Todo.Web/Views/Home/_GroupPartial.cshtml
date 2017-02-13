@@ -1,0 +1,9 @@
+﻿@model tblGroup
+<li id="group_@Model.Id" data-groupid="@Model.Id" data-gettasksurl="@Url.Action("_TaskList","Home")">
+    <a href="javascript:void(0)">
+        @Model.Name <span class="badge">@Model.tblTasks.Count(x => x.IsCompleted)/@Model.tblTasks.Count</span>
+        <button type="button" class="close" aria-label="Close" data-groupid="@Model.Id" data-deleteurl="@Url.Action("_DeleteGroup", "Home")">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </a>
+</li>
