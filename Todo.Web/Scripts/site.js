@@ -1,9 +1,8 @@
 ﻿$(function () {
 
-    // ********************************************************************
-    // task operations...
-    // ********************************************************************
-
+    // ************************************************************************************************************
+    // task operations
+    // ************************************************************************************************************
 
     /* Add task */
     $('#tasksMain').on('submit', '#formAddTask', function () {
@@ -85,14 +84,9 @@
         }); // end - ajax
     }); // end - change
 
-
-
-
-
-    // ********************************************************************
-    // group operations...
-    // ********************************************************************
-
+    // ************************************************************************************************************
+    // group operations
+    // ************************************************************************************************************
 
     /* Group activated custom event */
     $('#groups').on('groupActivated', 'li', function () {
@@ -110,10 +104,6 @@
             }
         });
     }); // end - custom event
-
-
-    /* Select first group */
-    selectFirstGroup();
 
     /* Active group */
     $('#groups').on('click', 'li > a', function (e) {
@@ -160,10 +150,12 @@
             data: { groupId: groupId },
             success: function (result) {
 
-                $('#group_' + groupId).remove();
-
+                // if remove group, first, jquery couldn't found group
                 if ($('#group_' + groupId).hasClass('active')) {
+                    $('#group_' + groupId).remove();
                     selectFirstGroup();
+                } else {
+                    $('#group_' + groupId).remove();
                 }
 
             },
@@ -173,10 +165,14 @@
         }); // end - ajax
     }); // end - click
 
+    /* Select first group */
+    selectFirstGroup();
 
 }); // end - document ready
 
-
+// ****************************************************************************************************************
+// methods
+// ****************************************************************************************************************
 
 /* Select first group */
 function selectFirstGroup() {

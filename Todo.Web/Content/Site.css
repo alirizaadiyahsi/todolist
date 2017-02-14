@@ -14,28 +14,37 @@
     padding-bottom: 15px;
 }
 
-    .tasks-main input[type="radio"], .tasks-main input[type="checkbox"] {
+    .tasks-main input[type="checkbox"] {
         margin-left: 0px;
         position: unset;
     }
 
-    .tasks-main .radio, .tasks-main .checkbox {
+    .tasks-main .checkbox {
         padding: 2px 6px 2px 6px;
         border-radius: 4px;
         border: 1px solid #fff;
         cursor: pointer;
     }
 
-        .tasks-main .radio:hover, .tasks-main .checkbox:hover {
+        .tasks-main .checkbox:hover {
             background-color: #d9edf7;
             border: 1px solid #ccc;
         }
 
-            .tasks-main .radio:hover .close, .tasks-main .checkbox:hover .close {
+        .tasks-main .checkbox:hover {
+            background-color: #d9edf7;
+            border: 1px solid #ccc;
+        }
+
+        .tasks-main .tasks-done .checkbox:hover {
+            background-color: #dff0d8;
+        }
+
+            .tasks-main .checkbox:hover .close {
                 display: block;
             }
 
-        .tasks-main .radio .close, .tasks-main .checkbox .close {
+        .tasks-main .checkbox .close {
             display: none;
         }
 

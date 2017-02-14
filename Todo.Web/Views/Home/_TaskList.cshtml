@@ -26,7 +26,7 @@
     <h4>
         Done:
     </h4>
-    <ul class="nav nav-pills nav-stacked" id="tasksDone">
+    <ul class="nav nav-pills nav-stacked text-success" id="tasksDone">
         @foreach (var task in Model.Where(x => x.IsCompleted))
         {
             @Html.Partial("_TaskPartial", task)
@@ -34,4 +34,15 @@
     </ul>
 </div>
 
+@*<div class="tasks-later">
+    <h4>
+        Later:
+    </h4>
+    <ul class="nav nav-pills nav-stacked" id="tasksLater">
+        @foreach (var task in Model.Where(x => x.IsCompleted))
+        {
+            @Html.Partial("_TaskLaterPartial", task)
+        }
+    </ul>
+</div>*@
 
