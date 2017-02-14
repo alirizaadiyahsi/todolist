@@ -1,8 +1,8 @@
 ﻿@model tblTask
 
-<li class="checkbox">
-    <input type="checkbox" data-task-status-update-url="@Url.Action("_UpdateTask", "Home", new { id = Model.Id })" @(Model.IsCompleted ? "checked" : "")> <span>@Model.Name</span>
-    <button type="button" class="close" aria-label="Close">
+<li class="checkbox" id="task_@Model.Id">
+    <input type="checkbox" id="taskChk_@Model.Id" data-task-status-update-url="@Url.Action("_UpdateTask", "Home", new { id = Model.Id })" @(Model.IsCompleted ? "checked" : "")> <span>@Model.Name</span>
+    <button type="button" class="close" aria-label="Close" data-task-id="@Model.Id" data-task-delete-url="@Url.Action("_DeleteTask", "Home")">
         <span aria-hidden="true">&times;</span>
     </button>
 </li>

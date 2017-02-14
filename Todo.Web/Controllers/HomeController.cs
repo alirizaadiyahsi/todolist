@@ -29,6 +29,7 @@ namespace Todo.Web.Controllers
             return View(groups);
         }
 
+        #region task operations
         public ActionResult _AddTask(string taskName, int groupId = 0)
         {
             var lastTask = _taskService.GetAllTasks()
@@ -83,6 +84,27 @@ namespace Todo.Web.Controllers
             return PartialView("_TaskList", tasks);
         }
 
+        public ActionResult _DeleteTask(int taskId)
+        {
+            try
+            {
+                var task = _taskService.FindTask(taskId);
+
+                _taskService.DeleteTask(task);
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var responseModel = CreateResponse(HttpStatusCode.InternalServerError, ex.GetBaseException().Message, ResponseStatusTypes.Danger);
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region group operations
         public ActionResult _AddGroup(string groupName)
         {
             var lastGroup = _taskService.GetAllGroups()
@@ -129,6 +151,7 @@ namespace Todo.Web.Controllers
             }
 
             return Json("", JsonRequestBehavior.AllowGet);
-        }
+        } 
+        #endregion
     }
 }
