@@ -1,12 +1,28 @@
 ﻿@model IQueryable<tblTask>
 
+<script>
+    $(function () {
+        $('.dropme').sortable({
+            connectWith: '.dropme'
+        }).droppable({
+            accept: '.button',
+            activeClass: 'highlight',
+            drop: function (event, ui) {
+                //var $li = $('<div>').html('List ' + ui.draggable.html());
+                //$li.appendTo(this);
+
+                ui.draggable.appendTo(this);
+            }
+        });
+    });
+</script>
 
 <div class="tasks-todo">
     <h4>
         To do:
     </h4>
 
-    <ul class="nav nav-pills nav-stacked" id="tasksTodo">
+    <ul class="nav nav-pills nav-stacked dropme" id="tasksTodo">
         @foreach (var task in Model.Where(x => !x.IsCompleted))
         {
             @Html.Partial("_TaskPartial", task)
@@ -26,7 +42,7 @@
     <h4>
         Done:
     </h4>
-    <ul class="nav nav-pills nav-stacked text-success" id="tasksDone">
+    <ul class="nav nav-pills nav-stacked dropme" id="tasksDone">
         @foreach (var task in Model.Where(x => x.IsCompleted))
         {
             @Html.Partial("_TaskPartial", task)
@@ -35,14 +51,14 @@
 </div>
 
 @*<div class="tasks-later">
-    <h4>
-        Later:
-    </h4>
-    <ul class="nav nav-pills nav-stacked" id="tasksLater">
-        @foreach (var task in Model.Where(x => x.IsCompleted))
-        {
-            @Html.Partial("_TaskLaterPartial", task)
-        }
-    </ul>
-</div>*@
+        <h4>
+            Later:
+        </h4>
+        <ul class="nav nav-pills nav-stacked" id="tasksLater">
+            @foreach (var task in Model.Where(x => x.IsCompleted))
+            {
+                @Html.Partial("_TaskLaterPartial", task)
+            }
+        </ul>
+    </div>*@
 

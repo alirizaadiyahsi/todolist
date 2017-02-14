@@ -24,7 +24,7 @@ namespace Todo.Web.Controllers
         public ActionResult Index()
         {
             var groups = _taskService.GetAllGroups()
-                .OrderByDescending(x => x.DisplayOrder);
+                .OrderBy(x => x.DisplayOrder);
 
             return View(groups);
         }
@@ -79,7 +79,7 @@ namespace Todo.Web.Controllers
         {
             var tasks = _taskService.GetAllTasks()
                 .Where(x => x.GroupId == groupId)
-               .OrderByDescending(x => x.DisplayOrder);
+                .OrderBy(x => x.DisplayOrder);
 
             return PartialView("_TaskList", tasks);
         }
@@ -151,7 +151,7 @@ namespace Todo.Web.Controllers
             }
 
             return Json("", JsonRequestBehavior.AllowGet);
-        } 
+        }
         #endregion
     }
 }

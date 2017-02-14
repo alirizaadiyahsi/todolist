@@ -5,8 +5,6 @@
 
 
 
-
-
 .tasks-main {
     -webkit-box-shadow: 0px 2px 20px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 2px 20px 0px rgba(50, 50, 50, 0.75);
@@ -14,10 +12,22 @@
     padding-bottom: 15px;
 }
 
+    .tasks-main .dropme {
+        min-height: 40px;
+    }
+
     .tasks-main input[type="checkbox"] {
         margin-left: 0px;
         position: unset;
     }
+
+    .tasks-main .tasks-done .checkbox {
+        color: #999;
+    }
+
+        .tasks-main .tasks-done .checkbox:hover {
+            background-color: #dff0d8;
+        }
 
     .tasks-main .checkbox {
         padding: 2px 6px 2px 6px;
@@ -29,15 +39,6 @@
         .tasks-main .checkbox:hover {
             background-color: #d9edf7;
             border: 1px solid #ccc;
-        }
-
-        .tasks-main .checkbox:hover {
-            background-color: #d9edf7;
-            border: 1px solid #ccc;
-        }
-
-        .tasks-main .tasks-done .checkbox:hover {
-            background-color: #dff0d8;
         }
 
             .tasks-main .checkbox:hover .close {

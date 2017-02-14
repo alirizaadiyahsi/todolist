@@ -15,7 +15,7 @@
             url: url,
             data: { taskName: taskName, groupId: groupId },
             success: function (result) {
-                $('#tasksTodo').prepend(result);
+                $('#tasksTodo').append(result);
                 $('#taskName').val('');
                 // group count change
                 $('#groups li.active .badge').html(groupCounts[0] + '/' + (Number(groupCounts[1]) + 1));
@@ -68,6 +68,12 @@
 
                 task.remove();
 
+
+                // TODO: yapılan bir değişiklikten sonra, tekrar lister sıralanmalı. 
+                // eğer yapılanlara taşınıyorsa, yapılanlar, update tarihine göre sıralanmalı
+                // yapılacaklara tekrar taşınıyorsa, eski sıraya göre tekrar yüklenmeli
+
+
                 // group count change
                 if (isCompleted) {
                     $('#tasksDone').prepend(result);
@@ -75,6 +81,7 @@
                 } else {
                     $('#tasksTodo').prepend(result);
                     $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                    $("#tasksTodo li").sort(sortElements).appendTo('#tasksTodo');
                 }
 
             },
@@ -127,10 +134,10 @@
             url: url,
             data: { groupName: groupName },
             success: function (result) {
-                $('#groups').prepend(result);
+                $('#groups').append(result);
                 $('#groupName').val('');
                 // select first group, when page first load
-                selectFirstGroup();
+                //selectFirstGroup();
             },
             error: function (result) {
                 console.log(result);
@@ -177,4 +184,9 @@
 /* Select first group */
 function selectFirstGroup() {
     $('#groups li').first().addClass('active').trigger('groupActivated').siblings().removeClass('active');
+}
+
+/* Sort elements */
+function sortElements(a, b) {
+    return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
 }
