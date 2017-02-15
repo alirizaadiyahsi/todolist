@@ -102,6 +102,30 @@ namespace Todo.Web.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult _UpdateTasksOrder(int[] taskIds)
+        {
+            try
+            {
+                for (int i = 0; i < taskIds.Count(); i++)
+                {
+                    var task = _taskService.FindTask(taskIds[i]);
+
+                    task.DisplayOrder = i;
+                }
+
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var responseModel = CreateResponse(HttpStatusCode.InternalServerError, ex.GetBaseException().Message, ResponseStatusTypes.Danger);
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         #region group operations

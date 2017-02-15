@@ -15,7 +15,7 @@
             url: url,
             data: { taskName: taskName, groupId: groupId },
             success: function (result) {
-                $('#tasksTodo').append(result);
+                $('#tasksTodoList').append(result);
                 $('#taskName').val('');
                 // group count change
                 $('#groups li.active .badge').html(groupCounts[0] + '/' + (Number(groupCounts[1]) + 1));
@@ -56,6 +56,11 @@
 
     /* Update task status */
     $('#tasksMain').on('change', 'input[type="checkbox"]', function () {
+        $(this).trigger('taskStatusChanged');
+    }); // end - change
+
+    /* Task status change custom event */
+    $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function () {
         var url = $(this).data('task-status-update-url');
         var task = $(this).parent('li');
         var groupCounts = $('#groups li.active .badge').text().split('/');
@@ -68,20 +73,14 @@
 
                 task.remove();
 
-
-                // TODO: yapılan bir değişiklikten sonra, tekrar lister sıralanmalı. 
-                // eğer yapılanlara taşınıyorsa, yapılanlar, update tarihine göre sıralanmalı
-                // yapılacaklara tekrar taşınıyorsa, eski sıraya göre tekrar yüklenmeli
-
-
                 // group count change
                 if (isCompleted) {
-                    $('#tasksDone').prepend(result);
+                    $('#tasksDoneList').prepend(result);
                     $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
                 } else {
-                    $('#tasksTodo').prepend(result);
+                    $('#tasksTodoList').prepend(result);
                     $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
-                    $("#tasksTodo li").sort(sortElements).appendTo('#tasksTodo');
+                    $("#tasksTodoList li").sort(sortElements).appendTo('#tasksTodoList');
                 }
 
             },
@@ -89,7 +88,7 @@
                 console.log(result);
             }
         }); // end - ajax
-    }); // end - change
+    }); // end - custom event
 
     // ************************************************************************************************************
     // group operations
@@ -189,4 +188,20 @@ function selectFirstGroup() {
 /* Sort elements */
 function sortElements(a, b) {
     return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
+}
+
+function updateTasksOrder() {
+    var taskIds = $('#tasksTodoList').sortable("toArray", { attribute: 'data-task-id' });
+
+    $.ajax({
+        url: app_root + 'Home/_UpdateTasksOrder',
+        data: { taskIds: taskIds },
+        traditional: true,
+        success: function (response) {
+
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
 }

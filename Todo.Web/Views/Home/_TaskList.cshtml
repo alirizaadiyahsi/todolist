@@ -2,18 +2,41 @@
 
 <script>
     $(function () {
-        $('.dropme').sortable({
-            connectWith: '.dropme'
-        }).droppable({
-            accept: '.button',
-            activeClass: 'highlight',
-            drop: function (event, ui) {
-                //var $li = $('<div>').html('List ' + ui.draggable.html());
-                //$li.appendTo(this);
+        $('#tasksTodoList, #tasksDoneList').sortable({
+            connectWith: '.dropme',
+            stop: function (event, ui) {
 
-                ui.draggable.appendTo(this);
+                var groupCounts = $('#groups li.active .badge').text().split('/');
+                var oldList = $(event.target).attr('id');
+                var newList = ui.item.closest('ul.dropme').attr('id');
+
+                // if from done to todo
+                if (oldList != newList && newList == 'tasksTodoList') {
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                    ui.item.children('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged');
+
+                    updateTasksOrder();
+                }
+
+                // if from todo to done
+                if (oldList != newList && newList == 'tasksDoneList') {
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                    ui.item.children('input[type="checkbox"]').attr('checked', true).trigger('taskStatusChanged');
+                }
+
+                // if only change sort
+                if (oldList == newList && newList == 'tasksTodoList') {
+                    updateTasksOrder();
+                }
             }
         });
+
+        //.droppable({
+        //    activeClass: 'active',
+        //    drop: function (event, ui) {
+        //        ui.draggable.appendTo(this);
+        //    }
+        //})
     });
 </script>
 
@@ -22,7 +45,7 @@
         To do:
     </h4>
 
-    <ul class="nav nav-pills nav-stacked dropme" id="tasksTodo">
+    <ul class="nav nav-pills nav-stacked dropme" id="tasksTodoList">
         @foreach (var task in Model.Where(x => !x.IsCompleted))
         {
             @Html.Partial("_TaskPartial", task)
@@ -42,7 +65,7 @@
     <h4>
         Done:
     </h4>
-    <ul class="nav nav-pills nav-stacked dropme" id="tasksDone">
+    <ul class="nav nav-pills nav-stacked dropme" id="tasksDoneList">
         @foreach (var task in Model.Where(x => x.IsCompleted))
         {
             @Html.Partial("_TaskPartial", task)
