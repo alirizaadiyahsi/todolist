@@ -5,29 +5,38 @@
     // ************************************************************************************************************
 
     /* Task status change custom event */
-    $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function () {
+    $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function (event, isDragged) {
         var url = $(this).data('task-status-update-url');
         var task = $(this).parent('li');
         var groupCounts = $('#groups li.active .badge').text().split('/');
         var isCompleted = this.checked;
+
+        console.log(isDragged);
 
         $.ajax({
             url: url,
             data: { isCompleted: isCompleted, updateField: 'is_completed' },
             success: function (result) {
 
-                task.remove();
+                if (!isDragged) {
+                    task.remove();
 
-                // group count change
-                if (isCompleted) {
-                    $('#tasksDoneList').prepend(result);
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                    // group count change
+                    if (isCompleted) {
+                        $('#tasksDoneList').prepend(result);
+                        $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                    } else {
+                        $('#tasksTodoList').prepend(result);
+                        $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                        $("#tasksTodoList li").sort(sortElements).appendTo('#tasksTodoList');
+                    }
                 } else {
-                    $('#tasksTodoList').prepend(result);
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
-                    $("#tasksTodoList li").sort(sortElements).appendTo('#tasksTodoList');
+                    if (isCompleted) {
+                        $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                    } else {
+                        $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                    }
                 }
-
             },
             error: function (result) {
                 console.log(result);
