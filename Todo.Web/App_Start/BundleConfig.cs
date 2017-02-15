@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace Todo.Web
 {
@@ -23,6 +22,9 @@ namespace Todo.Web
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/site.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/generaljs").Include(
+                      "~/Scripts/general.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

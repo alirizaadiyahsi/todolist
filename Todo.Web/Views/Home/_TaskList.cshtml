@@ -1,45 +1,5 @@
 ﻿@model IQueryable<tblTask>
 
-<script>
-    $(function () {
-        $('#tasksTodoList, #tasksDoneList').sortable({
-            connectWith: '.dropme',
-            stop: function (event, ui) {
-
-                var groupCounts = $('#groups li.active .badge').text().split('/');
-                var oldList = $(event.target).attr('id');
-                var newList = ui.item.closest('ul.dropme').attr('id');
-
-                // if from done to todo
-                if (oldList != newList && newList == 'tasksTodoList') {
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
-                    ui.item.children('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged');
-
-                    updateTasksOrder();
-                }
-
-                // if from todo to done
-                if (oldList != newList && newList == 'tasksDoneList') {
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
-                    ui.item.children('input[type="checkbox"]').attr('checked', true).trigger('taskStatusChanged');
-                }
-
-                // if only change sort
-                if (oldList == newList && newList == 'tasksTodoList') {
-                    updateTasksOrder();
-                }
-            }
-        });
-
-        //.droppable({
-        //    activeClass: 'active',
-        //    drop: function (event, ui) {
-        //        ui.draggable.appendTo(this);
-        //    }
-        //})
-    });
-</script>
-
 <div class="tasks-todo">
     <h4>
         To do:
@@ -73,15 +33,37 @@
     </ul>
 </div>
 
-@*<div class="tasks-later">
-        <h4>
-            Later:
-        </h4>
-        <ul class="nav nav-pills nav-stacked" id="tasksLater">
-            @foreach (var task in Model.Where(x => x.IsCompleted))
-            {
-                @Html.Partial("_TaskLaterPartial", task)
+
+
+<script>
+    $(function () {
+
+        /* Re-sort tasklist */
+        $('#tasksTodoList, #tasksDoneList').sortable({
+            connectWith: '.dropme',
+            stop: function (event, ui) {
+                var oldList = $(event.target).attr('id');
+                var newList = ui.item.closest('ul.dropme').attr('id');
+
+                // if from done to todo
+                if (oldList != newList && newList == 'tasksTodoList') {
+                    ui.item.children('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged');
+
+                    updateTasksOrder();
+                }
+
+                // if from todo to done
+                if (oldList != newList && newList == 'tasksDoneList') {
+                    ui.item.children('input[type="checkbox"]').attr('checked', true).trigger('taskStatusChanged');
+                }
+
+                // if only change sort
+                if (oldList == newList && newList == 'tasksTodoList') {
+                    updateTasksOrder();
+                }
             }
-        </ul>
-    </div>*@
+        }); // end - sortable
+
+    });
+</script>
 

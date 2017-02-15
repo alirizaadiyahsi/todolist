@@ -4,6 +4,37 @@
     // task operations
     // ************************************************************************************************************
 
+    /* Task status change custom event */
+    $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function () {
+        var url = $(this).data('task-status-update-url');
+        var task = $(this).parent('li');
+        var groupCounts = $('#groups li.active .badge').text().split('/');
+        var isCompleted = this.checked;
+
+        $.ajax({
+            url: url,
+            data: { isCompleted: isCompleted, updateField: 'is_completed' },
+            success: function (result) {
+
+                task.remove();
+
+                // group count change
+                if (isCompleted) {
+                    $('#tasksDoneList').prepend(result);
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
+                } else {
+                    $('#tasksTodoList').prepend(result);
+                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
+                    $("#tasksTodoList li").sort(sortElements).appendTo('#tasksTodoList');
+                }
+
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        }); // end - ajax
+    }); // end - custom event
+
     /* Add task */
     $('#tasksMain').on('submit', '#formAddTask', function () {
         var url = $(this).attr('action');
@@ -59,36 +90,7 @@
         $(this).trigger('taskStatusChanged');
     }); // end - change
 
-    /* Task status change custom event */
-    $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function () {
-        var url = $(this).data('task-status-update-url');
-        var task = $(this).parent('li');
-        var groupCounts = $('#groups li.active .badge').text().split('/');
-        var isCompleted = this.checked;
 
-        $.ajax({
-            url: url,
-            data: { isCompleted: isCompleted, updateField: 'is_completed' },
-            success: function (result) {
-
-                task.remove();
-
-                // group count change
-                if (isCompleted) {
-                    $('#tasksDoneList').prepend(result);
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) + 1) + '/' + groupCounts[1]);
-                } else {
-                    $('#tasksTodoList').prepend(result);
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + groupCounts[1]);
-                    $("#tasksTodoList li").sort(sortElements).appendTo('#tasksTodoList');
-                }
-
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        }); // end - ajax
-    }); // end - custom event
 
     // ************************************************************************************************************
     // group operations
@@ -111,12 +113,13 @@
         });
     }); // end - custom event
 
+    /* Select first group */
+    selectFirstGroup();
+
     /* Active group */
     $('#groups').on('click', 'li > a', function (e) {
-
         // if cliecked element is close button
         // dont add active class to 'li' element
-        //if (e.target !== this) {
         if ($(e.target).hasClass('icon-close')) {
 
         } else {
@@ -135,8 +138,6 @@
             success: function (result) {
                 $('#groups').append(result);
                 $('#groupName').val('');
-                // select first group, when page first load
-                //selectFirstGroup();
             },
             error: function (result) {
                 console.log(result);
@@ -155,7 +156,6 @@
             url: deleteUrl,
             data: { groupId: groupId },
             success: function (result) {
-
                 // if remove group, first, jquery couldn't found group
                 if ($('#group_' + groupId).hasClass('active')) {
                     $('#group_' + groupId).remove();
@@ -171,10 +171,9 @@
         }); // end - ajax
     }); // end - click
 
-    /* Select first group */
-    selectFirstGroup();
-
 }); // end - document ready
+
+
 
 // ****************************************************************************************************************
 // methods
