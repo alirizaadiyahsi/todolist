@@ -12,7 +12,7 @@
     padding-bottom: 15px;
 }
 
-    .tasks-main .dropme {
+    .tasks-main .sortable {
         min-height: 40px;
     }
 
@@ -20,14 +20,6 @@
         margin-left: 0px;
         position: unset;
     }
-
-    .tasks-main .tasks-done .checkbox {
-        color: #999;
-    }
-
-        .tasks-main .tasks-done .checkbox:hover {
-            background-color: #dff0d8;
-        }
 
     .tasks-main .checkbox {
         padding: 2px 6px 2px 6px;
@@ -37,7 +29,7 @@
     }
 
         .tasks-main .checkbox:hover {
-            background-color: #d9edf7;
+            background-color: rgb(217, 237, 247);
             border: 1px solid #ccc;
         }
 
@@ -49,24 +41,50 @@
             display: none;
         }
 
-.left-group .nav > li > a {
-    padding: 5px 7px;
+    .tasks-main .tasks-done .checkbox {
+        color: #999;
+    }
+
+        .tasks-main .tasks-done .checkbox:hover {
+           background-color: #eee;
+        }
+
+    .tasks-main .tasks-todo .ui-sortable-helper {
+        background-color: rgba(217, 237, 247, 0.5);
+    }
+
+    .tasks-main .tasks-done .ui-sortable-helper {
+        background-color: rgba(223, 240, 216, 0.5) !important;
+    }
+
+.left-group .nav > li {
     border: 1px solid #fff;
 }
 
-    .left-group .nav > li > a .close {
-        display: none;
+    .left-group .nav > li > a {
+        padding: 5px 7px;
+        border: 1px solid #fff;
     }
 
-.left-group .nav > li:not(.active) > a:hover {
-    border: 1px solid #ccc;
+        .left-group .nav > li > a .close {
+            display: none;
+        }
+
+    .left-group .nav > li:not(.active) > a:hover {
+        border: 1px solid #ccc;
+        color: #333;
+        background-color: #fcf8e3;
+    }
+
+    .left-group .nav > li > a:hover .close {
+        display: block;
+    }
+
+.left-group .ui-droppable-hover {
     color: #333;
-    background-color: #fcf8e3;
+    background-color: #dff0d8;
 }
 
-.left-group .nav > li > a:hover .close {
-    display: block;
-}
 
 
 

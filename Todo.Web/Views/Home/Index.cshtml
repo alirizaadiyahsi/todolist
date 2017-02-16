@@ -38,7 +38,12 @@
             stop: function (event, ui) {
                 updateGroupsOrder();
             }
-        }); // end - sortable
+        });
+
+        $('#groups li').droppable({
+            accept: '#tasksTodoList li,#tasksDoneList li',
+            tolerance : 'pointer',
+        });
 
     });
 </script>
