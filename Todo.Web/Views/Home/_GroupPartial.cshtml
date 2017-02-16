@@ -1,8 +1,8 @@
 ﻿@model tblGroup
-<li id="group_@Model.Id" data-groupid="@Model.Id" data-get-tasks-url="@Url.Action("_TaskList","Home")">
+<li id="group_@Model.Id" data-group-id="@Model.Id" data-get-tasks-url="@Url.Action("_TaskList","Home")">
     <a href="javascript:void(0)">
         @Model.Name <span class="badge">@Model.tblTasks.Count(x => x.IsCompleted)/@Model.tblTasks.Count</span>
-        <button type="button" class="close" aria-label="Close" data-groupid="@Model.Id" data-group-delete-url="@Url.Action("_DeleteGroup", "Home")">
+        <button type="button" class="close" aria-label="Close" data-group-id="@Model.Id" data-group-delete-url="@Url.Action("_DeleteGroup", "Home")">
             <span aria-hidden="true" class="icon-close">&times;</span>
         </button>
     </a>

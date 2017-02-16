@@ -11,8 +11,6 @@
         var groupCounts = $('#groups li.active .badge').text().split('/');
         var isCompleted = this.checked;
 
-        console.log(isDragged);
-
         $.ajax({
             url: url,
             data: { isCompleted: isCompleted, updateField: 'is_completed' },
@@ -48,7 +46,7 @@
     $('#tasksMain').on('submit', '#formAddTask', function () {
         var url = $(this).attr('action');
         var taskName = $('#taskName').val();
-        var groupId = $('#groups li.active').data('groupid');
+        var groupId = $('#groups li.active').data('group-id');
         var groupCounts = $('#groups li.active .badge').text().split('/');
 
         $.ajax({
@@ -107,7 +105,7 @@
 
     /* Group activated custom event */
     $('#groups').on('groupActivated', 'li', function () {
-        var groupId = $(this).data('groupid');
+        var groupId = $(this).data('group-id');
         var url = $(this).data('get-tasks-url');
 
         $.ajax({
@@ -158,7 +156,7 @@
 
     /* Delete group */
     $('#groups').on('click', '.close', function () {
-        var groupId = $(this).data('groupid');
+        var groupId = $(this).data('group-id');
         var deleteUrl = $(this).data('group-delete-url');
 
         $.ajax({
@@ -198,12 +196,30 @@ function sortElements(a, b) {
     return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
 }
 
+/* Update tasks order */
 function updateTasksOrder() {
     var taskIds = $('#tasksTodoList').sortable("toArray", { attribute: 'data-task-id' });
 
     $.ajax({
         url: app_root + 'Home/_UpdateTasksOrder',
         data: { taskIds: taskIds },
+        traditional: true,
+        success: function (response) {
+
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+}
+
+/* Update groups order */
+function updateGroupsOrder() {
+    var groupIds = $('#groups').sortable("toArray", { attribute: 'data-group-id' });
+
+    $.ajax({
+        url: app_root + 'Home/_UpdateGroupsOrder',
+        data: { groupIds: groupIds },
         traditional: true,
         success: function (response) {
 

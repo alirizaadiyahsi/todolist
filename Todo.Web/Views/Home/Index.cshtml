@@ -30,3 +30,15 @@
     </div>
 </div>
 
+<script>
+    $(function () {
+
+        /* Re-sort groups */
+        $('#groups').sortable({
+            stop: function (event, ui) {
+                updateGroupsOrder();
+            }
+        }); // end - sortable
+
+    });
+</script>

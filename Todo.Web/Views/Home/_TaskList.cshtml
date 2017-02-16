@@ -48,7 +48,6 @@
                 // if from done to todo
                 if (oldList != newList && newList == 'tasksTodoList') {
                     ui.item.children('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged',true);
-
                     updateTasksOrder();
                 }
 
