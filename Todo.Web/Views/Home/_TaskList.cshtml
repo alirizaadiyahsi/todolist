@@ -39,8 +39,9 @@
         /* Re-sort tasklist */
         $('#tasksTodoList, #tasksDoneList').sortable({
             connectWith: '.sortable,.droppable',
+            tolerance: 'pointer',
             stop: function (event, ui) {
-                var oldList = $(event.target).attr('id');
+                var oldList = $(this).attr('id');
                 var newList = ui.item.closest('ul.sortable').attr('id');
 
                 // if from done to todo

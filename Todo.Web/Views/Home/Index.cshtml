@@ -40,9 +40,19 @@
             }
         });
 
+        /* Task dropped to group */
         $('#groups li').droppable({
             accept: '#tasksTodoList li,#tasksDoneList li',
-            tolerance : 'pointer',
+            tolerance: 'pointer',
+            drop: function (event, ui) {
+                var activeGroupId = $('#groups li.active').data('group-id');
+                var droppedGroupId = $(this).data('group-id');
+                var taskId = $(ui.draggable).data('task-id');
+
+                if (activeGroupId != droppedGroupId) {
+                    updateTaskGroup(this, ui.draggable, $('#groups li.active'));
+                }
+            }
         });
 
     });

@@ -55,6 +55,8 @@
             success: function (result) {
                 $('#tasksTodoList').append(result);
                 $('#taskName').val('');
+                $('#tasksTodoList').sortable("refresh");
+
                 // group count change
                 $('#groups li.active .badge').html(groupCounts[0] + '/' + (Number(groupCounts[1]) + 1));
             },
@@ -145,6 +147,22 @@
             success: function (result) {
                 $('#groups').append(result);
                 $('#groupName').val('');
+                $('#groups').sortable("refresh");
+
+                /* Task dropped to group */
+                $('#' + $(result).attr('id')).droppable({
+                    accept: '#tasksTodoList li,#tasksDoneList li',
+                    tolerance: 'pointer',
+                    drop: function (event, ui) {
+                        var activeGroupId = $('#groups li.active').data('group-id');
+                        var droppedGroupId = $(this).data('group-id');
+                        var taskId = $(ui.draggable).data('task-id');
+
+                        if (activeGroupId != droppedGroupId) {
+                            updateTaskGroup(this, ui.draggable, $('#groups li.active'));
+                        }
+                    }
+                });
             },
             error: function (result) {
                 console.log(result);
@@ -223,6 +241,36 @@ function updateGroupsOrder() {
         traditional: true,
         success: function (response) {
 
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+}
+
+/* Update groups order */
+function updateTaskGroup(group, task, activeGroup) {
+    var groupCountsActive = $(activeGroup).find('.badge').text().split('/');
+    var groupCounts = $(group).find('.badge').text().split('/');
+    var isCompleted = $(task).find('input[type="checkbox"]').is(':checked');
+
+    console.log(isCompleted);
+
+    $.ajax({
+        url: app_root + 'Home/_UpdateTaskGroup',
+        data: { groupId: $(group).data('group-id'), taskId: $(task).data('task-id') },
+        success: function (response) {
+
+            // group count change
+            if (isCompleted) {
+                $(activeGroup).find('.badge').html((Number(groupCountsActive[0]) - 1) + '/' + (Number(groupCountsActive[1]) - 1));
+                $(group).find('.badge').html((Number(groupCounts[0]) + 1) + '/' + (Number(groupCounts[1]) + 1));
+            } else {
+                $(activeGroup).find('.badge').html(Number(groupCountsActive[0]) + '/' + (Number(groupCountsActive[1]) - 1));
+                $(group).find('.badge').html(Number(groupCounts[0]) + '/' + (Number(groupCounts[1]) + 1));
+            }
+
+            $(task).remove();
         },
         error: function (response) {
             console.log(response);
