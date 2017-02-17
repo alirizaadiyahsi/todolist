@@ -39,6 +39,7 @@
         /* Re-sort tasklist */
         $('#tasksTodoList, #tasksDoneList').sortable({
             connectWith: '.sortable,.droppable',
+            placeholder: "ui-sortable-placeholder",
             tolerance: 'pointer',
             stop: function (event, ui) {
                 var oldList = $(this).attr('id');
@@ -46,13 +47,13 @@
 
                 // if from done to todo
                 if (oldList != newList && newList == 'tasksTodoList') {
-                    ui.item.children('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged', true);
+                    ui.item.find('input[type="checkbox"]').attr('checked', false).trigger('taskStatusChanged', true);
                     updateTasksOrder();
                 }
 
                 // if from todo to done
                 if (oldList != newList && newList == 'tasksDoneList') {
-                    ui.item.children('input[type="checkbox"]').attr('checked', true).trigger('taskStatusChanged', true);
+                    ui.item.find('input[type="checkbox"]').attr('checked', true).trigger('taskStatusChanged', true);
                 }
 
                 // if only change sort
@@ -61,10 +62,6 @@
                 }
             }
         }); // end - sortable
-
-        //$('#tasksTodoList li, #tasksDoneList li').draggable({
-        //    revert: 'invalid'
-        //}); // end - draggable
 
     });
 </script>

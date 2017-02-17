@@ -1,8 +1,25 @@
 ﻿@model tblTask
 
 <li class="checkbox" id="task_@Model.Id" data-sort="@Model.DisplayOrder" data-task-id="@Model.Id">
-    <input type="checkbox" id="taskChk_@Model.Id" data-task-status-update-url="@Url.Action("_UpdateTask", "Home", new { id = Model.Id })" @(Model.IsCompleted ? "checked" : "")> <span>@Model.Name</span>
-    <button type="button" class="close" aria-label="Close" data-task-id="@Model.Id" data-task-delete-url="@Url.Action("_DeleteTask", "Home")">
-        <span aria-hidden="true">&times;</span>
-    </button>
+    <a href="javascript:void(0)">
+        <input type="checkbox" id="taskChk_@Model.Id" data-task-status-update-url="@Url.Action("_UpdateTask", "Home", new { id = Model.Id })" @(Model.IsCompleted ? "checked" : "")>
+        <span class="task-name">@Model.Name</span>
+        <button type="button" class="close" aria-label="Close" data-task-id="@Model.Id" data-task-delete-url="@Url.Action("_DeleteTask", "Home")">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </a>
+
+
+    <form id="taskInput_@Model.Id" class="input-task-edit" style="display:none;" action="@Url.Action("_UpdateTask", "Home", new { id = Model.Id })">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" value="@Model.Name" />
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-primary btn-save-task" type="submit">✓ Save</button>
+            </span>
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-cancel-save" type="button">X Cancel</button>
+            </span>
+        </div>
+    </form>
+
 </li>

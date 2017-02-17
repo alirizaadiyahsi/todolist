@@ -61,7 +61,7 @@ namespace Todo.Web.Controllers
             return PartialView("_TaskPartial", task);
         }
 
-        public ActionResult _UpdateTask(int id, bool isCompleted, string updateField)
+        public ActionResult _UpdateTask(int id, bool isCompleted = false, string updateField = "", string name = "")
         {
             var task = _taskService.FindTask(id);
 
@@ -69,7 +69,13 @@ namespace Todo.Web.Controllers
             {
                 task.IsCompleted = isCompleted;
             }
+            if (updateField == "name")
+            {
+                task.Name = name;
+            }
 
+            task.UpdateDate = DateTime.Now;
+            task.UpdateUserId = 0;
             _unitOfWork.SaveChanges();
 
             return PartialView("_TaskPartial", task);
@@ -112,6 +118,8 @@ namespace Todo.Web.Controllers
                     var task = _taskService.FindTask(taskIds[i]);
 
                     task.DisplayOrder = i;
+                    task.UpdateDate = DateTime.Now;
+                    task.UpdateUserId = 0;
                 }
 
                 _unitOfWork.SaveChanges();
@@ -186,6 +194,8 @@ namespace Todo.Web.Controllers
                     var group = _taskService.FindGroup(groupIds[i]);
 
                     group.DisplayOrder = i;
+                    group.UpdateDate = DateTime.Now;
+                    group.UpdateUserId = 0;
                 }
 
                 _unitOfWork.SaveChanges();
@@ -200,12 +210,27 @@ namespace Todo.Web.Controllers
             return Json("", JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult _UpdateTaskGroup(int groupId, int taskId) {
+        public ActionResult _UpdateGroup(int id, string name = "")
+        {
+            var group = _taskService.FindGroup(id);
+
+            group.Name = name;
+            group.UpdateDate = DateTime.Now;
+            group.UpdateUserId = 0;
+            _unitOfWork.SaveChanges();
+
+            return PartialView("_GroupPartial", group);
+        }
+
+        public ActionResult _UpdateTaskGroup(int groupId, int taskId)
+        {
             try
             {
                 var task = _taskService.FindTask(taskId);
 
                 task.GroupId = groupId;
+                task.UpdateDate = DateTime.Now;
+                task.UpdateUserId = 0;
 
                 _unitOfWork.SaveChanges();
             }

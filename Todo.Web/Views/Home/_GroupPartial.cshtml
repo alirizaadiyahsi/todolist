@@ -1,9 +1,21 @@
 ﻿@model tblGroup
 <li id="group_@Model.Id" data-group-id="@Model.Id" data-get-tasks-url="@Url.Action("_TaskList","Home")" class="droppable">
     <a href="javascript:void(0)">
-        @Model.Name <span class="badge">@Model.tblTasks.Count(x => x.IsCompleted)/@Model.tblTasks.Count</span>
+        <span class="group-name">@Model.Name</span> <span class="badge">@Model.tblTasks.Count(x => x.IsCompleted)/@Model.tblTasks.Count</span>
         <button type="button" class="close" aria-label="Close" data-group-id="@Model.Id" data-group-delete-url="@Url.Action("_DeleteGroup", "Home")">
             <span aria-hidden="true" class="icon-close">&times;</span>
         </button>
     </a>
+
+    <form id="groupInput_@Model.Id" class="input-group-edit" style="display:none;" action="@Url.Action("_UpdateGroup", "Home", new { id = Model.Id })">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control" value="@Model.Name" />
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-primary btn-save-group" type="submit">✓ Save</button>
+            </span>
+            <span class="input-group-btn">
+                <button class="btn btn-default btn-cancel-save" type="button">X Cancel</button>
+            </span>
+        </div>
+    </form>
 </li>

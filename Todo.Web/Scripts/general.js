@@ -7,7 +7,7 @@
     /* Task status change custom event */
     $('#tasksMain').on('taskStatusChanged', 'input[type="checkbox"]', function (event, isDragged) {
         var url = $(this).data('task-status-update-url');
-        var task = $(this).parent('li');
+        var task = $(this).closest('li');
         var groupCounts = $('#groups li.active .badge').text().split('/');
         var isCompleted = this.checked;
 
@@ -70,34 +70,84 @@
 
     /* Delete task */
     $('#tasksMain').on('click', '.close', function () {
-        var taskId = $(this).data('task-id');
-        var deleteUrl = $(this).data('task-delete-url');
-        var groupCounts = $('#groups li.active .badge').text().split('/');
 
-        $.ajax({
-            url: deleteUrl,
-            data: { taskId: taskId },
-            success: function (result) {
-                // group count change
-                if ($('#taskChk_' + taskId).is(':checked')) {
-                    $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + (Number(groupCounts[1]) - 1));
-                } else {
-                    $('#groups li.active .badge').html((groupCounts[0]) + '/' + (Number(groupCounts[1]) - 1));
+        if (confirm('Are you sure want to delete?')) {
+            var taskId = $(this).data('task-id');
+            var deleteUrl = $(this).data('task-delete-url');
+            var groupCounts = $('#groups li.active .badge').text().split('/');
+
+            $.ajax({
+                url: deleteUrl,
+                data: { taskId: taskId },
+                success: function (result) {
+                    // group count change
+                    if ($('#taskChk_' + taskId).is(':checked')) {
+                        $('#groups li.active .badge').html((Number(groupCounts[0]) - 1) + '/' + (Number(groupCounts[1]) - 1));
+                    } else {
+                        $('#groups li.active .badge').html((groupCounts[0]) + '/' + (Number(groupCounts[1]) - 1));
+                    }
+
+                    $('#task_' + taskId).remove();
+
+                },
+                error: function (result) {
+                    console.log(result);
                 }
+            });// end - ajax
+        }
 
-                $('#task_' + taskId).remove();
-
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        });// end - ajax
     }); // end - click
 
     /* Update task status */
     $('#tasksMain').on('change', 'input[type="checkbox"]', function () {
         $(this).trigger('taskStatusChanged');
     }); // end - change
+
+    /* Update task name */
+    $('#tasksMain').on('dblclick', 'li', function () {
+
+        var clickedTask = $(this);
+        var taskId = clickedTask.data('task-id');
+        var clickedTaskInputGroup = $('#taskInput_' + taskId);
+        var saveButton = clickedTaskInputGroup.find('.btn-save-task');
+        var cancelButton = clickedTaskInputGroup.find('.btn-cancel-save');
+        var taskEditForm = $(this).find('form');
+        var taskInput = clickedTask.find('input[type="text"]');
+        var allInputGroups = $('.input-task-edit');
+
+        // reset editable
+        $('#tasksMain').find('li').removeClass('.editable-active').children().show();
+        allInputGroups.hide();
+
+        // add editable
+        clickedTask.addClass('.editable-active').children().hide();
+        taskEditForm.show();
+        taskInput.focus();
+
+        cancelButton.click(function () {
+            clickedTask.removeClass('.editable-active').children().show();
+            clickedTaskInputGroup.hide();
+        });
+
+        taskEditForm.submit(function () {
+            $.ajax({
+                url: $(this).attr('action'),
+                data: { name: taskInput.val(), updateField: 'name' },
+                success: function (response) {
+                    clickedTask.find('span.task-name').text(taskInput.val());
+
+                    // reset editable
+                    clickedTask.removeClass('.editable-active').children().show();
+                    clickedTaskInputGroup.hide();
+                },
+                error: function () {
+                    console.log(response);
+                }
+            });
+
+            return false;
+        });
+    });
 
 
 
@@ -126,13 +176,13 @@
     selectFirstGroup();
 
     /* Active group */
-    $('#groups').on('click', 'li > a', function (e) {
+    $('#groups').on('click', 'li', function (e) {
         // if cliecked element is close button
         // dont add active class to 'li' element
         if ($(e.target).hasClass('icon-close')) {
 
         } else {
-            $(this).parent('li').addClass('active').trigger('groupActivated').siblings().removeClass('active');
+            $(this).addClass('active').trigger('groupActivated').siblings().removeClass('active');
         }
     }); // end - click
 
@@ -174,27 +224,75 @@
 
     /* Delete group */
     $('#groups').on('click', '.close', function () {
-        var groupId = $(this).data('group-id');
-        var deleteUrl = $(this).data('group-delete-url');
+        if (confirm('Are you sure want to delete?')) {
+            var groupId = $(this).data('group-id');
+            var deleteUrl = $(this).data('group-delete-url');
 
-        $.ajax({
-            url: deleteUrl,
-            data: { groupId: groupId },
-            success: function (result) {
-                // if remove group, first, jquery couldn't found group
-                if ($('#group_' + groupId).hasClass('active')) {
-                    $('#group_' + groupId).remove();
-                    selectFirstGroup();
-                } else {
-                    $('#group_' + groupId).remove();
+            $.ajax({
+                url: deleteUrl,
+                data: { groupId: groupId },
+                success: function (result) {
+                    // if remove group, first, jquery couldn't found group
+                    if ($('#group_' + groupId).hasClass('active')) {
+                        $('#group_' + groupId).remove();
+                        selectFirstGroup();
+                    } else {
+                        $('#group_' + groupId).remove();
+                    }
+
+                },
+                error: function (result) {
+                    console.log(result);
                 }
-
-            },
-            error: function (result) {
-                console.log(result);
-            }
-        }); // end - ajax
+            }); // end - ajax
+        }
     }); // end - click
+
+    /* Update group name */
+    $('#groups').on('dblclick', 'li', function () {
+
+        var clickedGroup = $(this);
+        var groupId = clickedGroup.data('group-id');
+        var clickedGroupInputGroup = $('#groupInput_' + groupId);
+        var saveButton = clickedGroupInputGroup.find('.btn-save-group');
+        var cancelButton = clickedGroupInputGroup.find('.btn-cancel-save');
+        var groupEditForm = $(this).find('form');
+        var groupInput = clickedGroup.find('input[type="text"]');
+        var allInputGroups = $('.input-group-edit');
+
+        // reset editable
+        $('#groups').find('li').removeClass('.editable-active').children().show();
+        allInputGroups.hide();
+
+        // add editable
+        clickedGroup.addClass('.editable-active').children().hide();
+        groupEditForm.show();
+        groupInput.focus();
+
+        cancelButton.click(function () {
+            clickedGroup.removeClass('.editable-active').children().show();
+            clickedGroupInputGroup.hide();
+        });
+
+        groupEditForm.submit(function () {
+            $.ajax({
+                url: $(this).attr('action'),
+                data: { name: groupInput.val() },
+                success: function (response) {
+                    clickedGroup.find('span.group-name').text(groupInput.val());
+
+                    // reset editable
+                    clickedGroup.removeClass('.editable-active').children().show();
+                    clickedGroupInputGroup.hide();
+                },
+                error: function () {
+                    console.log(response);
+                }
+            });
+
+            return false;
+        });
+    });
 
 }); // end - document ready
 
