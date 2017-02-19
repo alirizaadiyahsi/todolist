@@ -5,6 +5,7 @@ using Todo.Core.Database.Tables;
 using Todo.Core.Domain.AppConstants;
 using Todo.Service;
 using System.Linq;
+using Todo.Web.Models;
 
 namespace Todo.Web.Controllers
 {
@@ -83,11 +84,18 @@ namespace Todo.Web.Controllers
 
         public ActionResult _TaskList(int groupId)
         {
-            var tasks = _taskService.GetAllTasks()
-                .Where(x => x.GroupId == groupId)
-                .OrderBy(x => x.DisplayOrder);
+            var taskModel = new TaskListModel();
 
-            return PartialView("_TaskList", tasks);
+            taskModel.TodoTaskList = _taskService.GetAllTasks()
+                .Where(x => x.GroupId == groupId && !x.IsCompleted)
+                .OrderBy(x => x.DisplayOrder)
+                .ToList();
+            taskModel.DoneTaskList = _taskService.GetAllTasks()
+                .Where(x => x.GroupId == groupId && x.IsCompleted)
+                .OrderByDescending(x => x.UpdateDate)
+                .ToList();
+
+            return PartialView("_TaskList", taskModel);
         }
 
         public ActionResult _DeleteTask(int taskId)
