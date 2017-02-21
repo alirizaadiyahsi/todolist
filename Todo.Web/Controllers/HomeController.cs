@@ -93,6 +93,7 @@ namespace Todo.Web.Controllers
             taskModel.DoneTaskList = _taskService.GetAllTasks()
                 .Where(x => x.GroupId == groupId && x.IsCompleted)
                 .OrderByDescending(x => x.UpdateDate)
+                .Take(20)
                 .ToList();
 
             return PartialView("_TaskList", taskModel);

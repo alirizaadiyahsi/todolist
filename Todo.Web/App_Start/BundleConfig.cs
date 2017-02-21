@@ -26,9 +26,14 @@ namespace Todo.Web
             bundles.Add(new ScriptBundle("~/bundles/generaljs").Include(
                       "~/Scripts/general.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/custom/customjs").Include(
+                      "~/Scripts/Custom/task.events.js",
+                      "~/Scripts/Custom/task.methods.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/bootstrap.awesome-checkbox.css"));
         }
     }
 }
