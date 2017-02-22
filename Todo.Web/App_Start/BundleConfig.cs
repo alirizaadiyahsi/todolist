@@ -1,4 +1,7 @@
-﻿using System.Web.Optimization;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Optimization;
 
 namespace Todo.Web
 {
@@ -26,14 +29,26 @@ namespace Todo.Web
             bundles.Add(new ScriptBundle("~/bundles/generaljs").Include(
                       "~/Scripts/general.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/custom/customjs").Include(
-                      "~/Scripts/Custom/task.events.js",
-                      "~/Scripts/Custom/task.methods.js"));
+            var bundle = new Bundle("~/bundles/custom/customjs");
+            bundle.Orderer = new AsIsBundleOrderer();
+            bundle
+                .Include("~/Scripts/Custom/task.methods.js")
+                .Include("~/Scripts/Custom/task.events.js")
+                .Include("~/Scripts/Custom/task.events.custom.js");
+            bundles.Add(bundle);
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap.awesome-checkbox.css"));
+        }
+    }
+
+    public class AsIsBundleOrderer : IBundleOrderer
+    {
+        public IEnumerable<BundleFile> OrderFiles(BundleContext context, IEnumerable<BundleFile> files)
+        {
+            return files;
         }
     }
 }

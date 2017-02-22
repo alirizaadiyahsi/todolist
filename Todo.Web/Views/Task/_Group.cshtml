@@ -1,0 +1,10 @@
+﻿@model tblGroup
+
+<li class="td-g-item" id="group_@Model.Id">
+    <a href="javascript:void(0)">
+        <span>@Model.Name</span> <span class="badge"><span class="td-t-badge-completed">@Model.tblTasks.Count(x => x.IsCompleted)</span>/<span class="td-t-badge-all">@Model.tblTasks.Count</span></span>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </a>
+</li>

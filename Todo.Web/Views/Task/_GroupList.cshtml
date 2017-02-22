@@ -1,0 +1,6 @@
+﻿@model IQueryable<tblGroup>
+
+@foreach (var group in Model)
+{
+    @Html.Partial("_Group", group)
+}

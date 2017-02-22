@@ -205,7 +205,7 @@
             success: function (result) {
                 $('#groups').append(result);
                 $('#groupName').val('');
-                $('#groups').sortable("refresh");
+                //$('#groups').sortable("refresh");
 
                 /* Task dropped to group */
                 $('#' + $(result).attr('id')).droppable({

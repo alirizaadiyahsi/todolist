@@ -1,47 +1,29 @@
-﻿$(document).on('taskAddedEvent', 'li', function (event) {
-
-	// TODO: task added actions
-
+﻿$(function () {
+    initializePage();
 });
 
-$(document).on('taskUpdatedEvent', 'li', function (event) {
+$(document).on('click', '.btn-auto-submit', function () {
+    var form = $(this).closest('form');
 
-	// TODO: task updated actions
+    $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.serialize(),
+        success: function (result) {
+            $('.td-g-list').append($(result));
+            $('#inputGroupName').val('');
+            $('.td-g-list').find("li:last")
+                .trigger(customEvents.groupAdded);
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 
+    return false;
 });
 
-$(document).on('taskOrderUpdatedEvent', 'li', function (event) {
-
-	// TODO: task order updated actions
-
-});
-
-$(document).on('taskStatusUpdatedEvent', 'li', function () {
-
-	// TODO: task status updated actions
-
-});
-
-$(document).on('groupAddedEvent', 'li', function (event) {
-
-	// TODO: group added actions
-
-});
-
-$(document).on('groupUpdatedEvent', 'li', function () {
-
-	// TODO: group updated actions
-
-});
-
-$(document).on('groupOrderUpdatedEvent', 'li', function () {
-
-	// TODO: group order updated event
-
-});
-
-$(document).on('groupActivatedEvent', 'li', function () {
-
-    // TODO: group order updated event
-
+$(document).on('click', '.td-g-list li a', function () {
+    $(this).closest('li')
+        .trigger(customEvents.groupActivated);
 });
