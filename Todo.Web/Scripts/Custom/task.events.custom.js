@@ -1,7 +1,7 @@
 ﻿$(document).on(customEvents.taskAdded, 'li', function (event) {
+    var task = $(this);
 
-    // TODO: task added actions
-
+    changeGroupBadgesCount(0, 1);
 });
 
 $(document).on(customEvents.taskUpdated, 'li', function (event) {
@@ -20,6 +20,25 @@ $(document).on(customEvents.taskStatusUpdated, 'li', function (event) {
 
     // TODO: task status updated actions
 
+});
+
+$(document).on(customEvents.groupActivated, 'li', function (event) {
+    var group = $(this);
+    var url = group.data('tasklist-url');
+
+    group.addClass('active')
+        .siblings().removeClass('active');
+
+    $.ajax({
+        url: url,
+        success: function (result) {
+            $('.td-t-all-container').html(result);
+            $('input[name=groupId]').val(group.data('group-id'));
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 });
 
 $(document).on(customEvents.groupAdded, 'li', function (event) {
@@ -41,11 +60,23 @@ $(document).on(customEvents.groupOrderUpdated, 'li', function (event) {
 
 });
 
-$(document).on(customEvents.groupActivated, 'li', function (event) {
+$(document).on(customEvents.groupDeleted, 'li', function (event) {
     var group = $(this);
+    var deleteUrl = group.data('delete-url');
 
-    group.addClass('active')
-        .siblings().removeClass('active');
-
-    // TODO: ajax call to this group tasks
+    $.ajax({
+        url: deleteUrl,
+        success: function (result) {
+            if (group.hasClass('active')) {
+                group.remove();
+                $('ul.td-g-list').find('li:first')
+                    .trigger(customEvents.groupActivated);
+            } else {
+                group.remove();
+            }
+        },
+        error: function (result) {
+            console.log(result);
+        }
+    });
 });

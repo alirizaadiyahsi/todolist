@@ -1,10 +1,13 @@
 ﻿@model tblGroup
 
-<li class="td-g-item" id="group_@Model.Id">
+<li class="td-g-item" id="group_@Model.Id"
+    data-group-id="@Model.Id"
+    data-delete-url="@Url.Action("_DeleteGroup", "Task", new { groupId = Model.Id })"
+    data-tasklist-url="@Url.Action("_TaskList", "Task", new { groupId = Model.Id })">
     <a href="javascript:void(0)">
-        <span>@Model.Name</span> <span class="badge"><span class="td-t-badge-completed">@Model.tblTasks.Count(x => x.IsCompleted)</span>/<span class="td-t-badge-all">@Model.tblTasks.Count</span></span>
+        <span>@Model.Name</span> <span class="badge"><span class="td-g-badge-completed">@Model.tblTasks.Count(x => x.IsCompleted)</span>/<span class="td-g-badge-all">@Model.tblTasks.Count</span></span>
         <button type="button" class="close" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true" class="icon-close">&times;</span>
         </button>
     </a>
 </li>

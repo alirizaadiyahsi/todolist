@@ -86,11 +86,11 @@ namespace Todo.Web.Controllers
         {
             var taskModel = new TaskListModel();
 
-            taskModel.TodoTaskList = _taskService.GetAllTasks()
+            taskModel.TaskListWaiting = _taskService.GetAllTasks()
                 .Where(x => x.GroupId == groupId && !x.IsCompleted)
                 .OrderBy(x => x.DisplayOrder)
                 .ToList();
-            taskModel.DoneTaskList = _taskService.GetAllTasks()
+            taskModel.TaskListDone = _taskService.GetAllTasks()
                 .Where(x => x.GroupId == groupId && x.IsCompleted)
                 .OrderByDescending(x => x.UpdateDate)
                 .Take(20)

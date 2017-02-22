@@ -15,7 +15,7 @@
                     <div class="input-group input-group-sm">
                         <input type="text" class="form-control" name="groupName" id="inputGroupName" placeholder="Add a new group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default btn-save-task btn-auto-submit" type="submit">Add</button>
+                            <button id="btnAddGroup" class="btn btn-default" type="submit">Add</button>
                         </span>
                     </div>
 
@@ -33,101 +33,8 @@
 
         <div class="row">
             <div class="col-md-12 td-t-all-container">
-
-                <div class="td-t-container td-t-container-waiting">
-                    <div class="td-header td-t-header td-t-header-waiting">
-                        <h3>To do list</h3>
-                    </div>
-                    <div class="form-group">
-                        <form action="@Url.Action("_AddTask","Task")" id="formAddTask">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" name="taskName" id="inputTaskName" placeholder="Add a new task">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default btn-save-task" type="submit">Add</button>
-                                </span>
-                            </div>
-
-                        </form>
-                    </div>
-                    <ul class="nav nav-sidebar td-t-list td-t-list-waiting">
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <span class="label label-info pul">Info</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <span class="label label-primary">primary</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="td-t-container td-t-container-waiting">
-                    <div class="td-header td-t-header td-t-header-done">
-                        <h3>Done list</h3>
-                    </div>
-
-                    <ul class="nav nav-sidebar td-t-list td-t-list-done">
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                        <li class="td-t-item">
-                            <a href="javascript:void(0)">
-                                <input type="checkbox">
-                                <span class="td-t-item-name">Model.Name</span>
-                                <button type="button" class="close" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Load with ajax when group is clicked -->
             </div>
-
         </div>
     </div>
 

@@ -1,0 +1,14 @@
+﻿@model tblTask
+
+<li class="td-t-item" id="task_@Model.Id"
+    data-group-id="@Model.GroupId"
+    data-task-id="@Model.Id"
+    data-delete-url="@Url.Action("_DeleteTask", "Task", new { taskId = Model.Id })">
+    <a href="javascript:void(0)">
+        <input type="checkbox" @(Model.IsCompleted ? "checked" : "")>
+        <span class="td-t-item-name">@Model.Name</span>
+        <button type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </a>
+</li>

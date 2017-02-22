@@ -5,7 +5,7 @@ namespace Todo.Web.Models
 {
     public class TaskListModel
     {
-        public List<tblTask> TodoTaskList { get; set; }
-        public List<tblTask> DoneTaskList { get; set; }
+        public List<tblTask> TaskListWaiting { get; set; }
+        public List<tblTask> TaskListDone { get; set; }
     }
 }

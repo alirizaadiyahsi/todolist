@@ -188,6 +188,8 @@
     <Content Include="Views\Task\Index.cshtml" />
     <Content Include="Views\Task\_Group.cshtml" />
     <Content Include="Views\Task\_GroupList.cshtml" />
+    <Content Include="Views\Task\_TaskList.cshtml" />
+    <Content Include="Views\Task\_Task.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
