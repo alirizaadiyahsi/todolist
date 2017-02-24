@@ -1,7 +1,13 @@
-﻿$(function () {
+﻿//
+// Run on page first load
+//
+$(function () {
     initializePage();
 });
 
+//
+// Task operations
+//
 $(document).on('click', '#btnAddTask', function () {
     var form = $(this).closest('form');
 
@@ -70,9 +76,9 @@ $(document).on('dblclick', 'ul.td-t-list li', function () {
 });
 
 
-/*
- * group operations
- */
+//
+// group operations
+//
 
 $(document).on('click', '#btnAddGroup', function () {
     var form = $(this).closest('form');
@@ -84,8 +90,6 @@ $(document).on('click', '#btnAddGroup', function () {
         success: function (result) {
             $('ul.td-g-list').append($(result));
             $('#inputGroupName').val('');
-            $('ul.td-g-list').find("li:last")
-                .trigger(customEvents.groupAdded);
         },
         error: function (result) {
             console.log(result);

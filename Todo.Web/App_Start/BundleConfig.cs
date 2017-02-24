@@ -26,9 +26,6 @@ namespace Todo.Web
                       "~/Scripts/respond.js",
                       "~/Scripts/site.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/generaljs").Include(
-                      "~/Scripts/general.js"));
-
             var bundle = new Bundle("~/bundles/custom/customjs");
             bundle.Orderer = new AsIsBundleOrderer();
             bundle

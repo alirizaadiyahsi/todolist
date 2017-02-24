@@ -1,13 +1,8 @@
 ﻿var customEvents = {
     taskAdded: 'taskAddedEvent',
-    taskUpdated: 'taskUpdated',
-    taskOrderUpdated: 'taskOrderUpdated',
     taskStatusUpdated: 'taskStatusUpdated',
     taskDeleted : 'taskDeleted',
     groupActivated: 'groupActivated',
-    groupAdded: 'groupAdded',
-    groupUpdated: 'groupUpdated',
-    groupOrderUpdated: 'groupOrderUpdated',
     groupDeleted: 'groupDeleted'
 };
 
