@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "RegisterSuccess";
+}
+
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-10">
+        <h3>Register Successfull</h3>
+        <p>Registration is successfull. You will redirect to <a href="@Url.Action("Register","Account")">login page</a>.</p>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // redirect to google after 3 seconds
+        window.setTimeout(function () {
+            window.location.href = '@Url.Action("Login", "Account")';
+        }, 3000);
+    });
+</script>

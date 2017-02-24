@@ -5,11 +5,12 @@ using System.Web.Mvc;
 using Todo.Core.Database.Tables;
 using Todo.Core.Domain.AppConstants;
 using Todo.Service;
+using Todo.Web.Application.Membership;
 using Todo.Web.Models;
 
 namespace Todo.Web.Controllers
 {
-    public class TaskController : BaseController
+    public class TaskController : AuthorizedController
     {
         private readonly TaskService _taskService;
 
@@ -23,6 +24,7 @@ namespace Todo.Web.Controllers
             return View();
         }
 
+        #region task operations
         public ActionResult _TaskList(int groupId)
         {
             var taskModel = new TaskListModel();
@@ -51,7 +53,7 @@ namespace Todo.Web.Controllers
                 DisplayOrder = lastTask.DisplayOrder + 1,
                 GroupId = groupId,
                 InsertDate = DateTime.Now,
-                InsertUserId = 0,
+                InsertUserId = CurrentUser.Id,
                 IsCompleted = false,
                 Name = taskName
             };
@@ -140,13 +142,16 @@ namespace Todo.Web.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
+        #endregion
 
 
 
 
+        #region group operations
         public ActionResult _GroupList()
         {
             var groups = _taskService.GetAllGroups()
+                .Where(x => x.UserId == CurrentUser.Id)
                 .OrderBy(x => x.DisplayOrder);
 
             return PartialView(groups);
@@ -156,6 +161,7 @@ namespace Todo.Web.Controllers
         public ActionResult _AddGroup(string groupName)
         {
             var lastGroup = _taskService.GetAllGroups()
+                .Where(x => x.UserId == CurrentUser.Id)
                 .OrderByDescending(x => x.DisplayOrder)
                 .FirstOrDefault() ?? new tblGroup();
 
@@ -163,7 +169,8 @@ namespace Todo.Web.Controllers
             {
                 DisplayOrder = lastGroup.DisplayOrder + 1,
                 InsertDate = DateTime.Now,
-                InsertUserId = 0,
+                InsertUserId = CurrentUser.Id,
+                UserId = CurrentUser.Id,
                 Name = groupName
             };
 
@@ -238,5 +245,6 @@ namespace Todo.Web.Controllers
 
             return Json("", JsonRequestBehavior.AllowGet);
         }
+        #endregion
     }
 }

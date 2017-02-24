@@ -9,7 +9,7 @@ using Todo.Web.Models;
 
 namespace Todo.Web.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController : PublicController
     {
         #region properties
         private TaskService _taskService;

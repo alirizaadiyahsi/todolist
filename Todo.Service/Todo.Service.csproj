@@ -50,6 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseService.cs" />
+    <Compile Include="MembershipService\PermissionService.cs" />
+    <Compile Include="MembershipService\RoleService.cs" />
+    <Compile Include="MembershipService\UserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskService.cs" />
     <Compile Include="UnitOfWork.cs" />

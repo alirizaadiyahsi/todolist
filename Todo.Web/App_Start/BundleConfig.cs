@@ -36,8 +36,7 @@ namespace Todo.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/bootstrap.awesome-checkbox.css"));
+                      "~/Content/site.css"));
         }
     }
 

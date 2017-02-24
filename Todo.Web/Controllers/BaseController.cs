@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Todo.Core.Domain.AppConstants;
 using Todo.Core.Domian.Models;
 using Todo.Service;
+using Todo.Web.Application.Membership;
 
 namespace Todo.Web.Controllers
 {
@@ -29,4 +30,13 @@ namespace Todo.Web.Controllers
             base.Dispose(disposing);
         }
     }
+
+    [Authorize]
+    public class AuthorizedController : BaseController
+    {
+        protected CurrentUser CurrentUser = CustomMembership.CurrentUser();
+    }
+
+    public class PublicController : BaseController
+    { }
 }

@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseEntity.cs" />
+    <Compile Include="Database\Tables\tblPermission.cs" />
+    <Compile Include="Database\Tables\tblRole.cs" />
+    <Compile Include="Database\Tables\tblUser.cs" />
     <Compile Include="Domian\AppConstants\Enums.cs" />
     <Compile Include="Domian\AppConstants\Keys.cs" />
     <Compile Include="Domian\AppConstants\Lists.cs" />
