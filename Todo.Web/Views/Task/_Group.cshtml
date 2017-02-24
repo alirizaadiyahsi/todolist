@@ -5,9 +5,20 @@
     data-delete-url="@Url.Action("_DeleteGroup", "Task", new { groupId = Model.Id })"
     data-tasklist-url="@Url.Action("_TaskList", "Task", new { groupId = Model.Id })">
     <a href="javascript:void(0)">
-        <span>@Model.Name</span> <span class="badge"><span class="td-g-badge-completed">@Model.tblTasks.Count(x => x.IsCompleted)</span>/<span class="td-g-badge-all">@Model.tblTasks.Count</span></span>
+        <span class="td-g-item-name">@Model.Name</span> 
+        <span class="badge"><span class="td-g-badge-completed">@Model.tblTasks.Count(x => x.IsCompleted)</span>/<span class="td-g-badge-all">@Model.tblTasks.Count</span></span>
         <button type="button" class="close" aria-label="Close">
             <span aria-hidden="true" class="icon-close">&times;</span>
         </button>
     </a>
+
+    <form class="form-group-edit" action="@Url.Action("_UpdateGroup", "Task", new { groupId = Model.Id })">
+        <div class="input-group">
+            <input type="text" class="form-control" value="@Model.Name" />
+            <span class="input-group-btn">
+                <button class="btn btn-warning btn-save-group" type="submit">✓</button>
+                <button class="btn btn-default btn-cancel-save-group" type="button">X</button>
+            </span>
+        </div>
+    </form>
 </li>

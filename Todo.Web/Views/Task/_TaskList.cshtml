@@ -6,16 +6,16 @@
     </div>
     <div class="form-group">
         <form action="@Url.Action("_AddTask","Task")" id="formAddTask">
-            <div class="input-group input-group-sm">
+            <div class="input-group">
                 <input type="text" class="form-control" name="taskName" id="inputTaskName" placeholder="Add a new task">
                 <span class="input-group-btn">
-                    <button id="btnAddTask" class="btn btn-default" type="submit">Add</button>
+                    <button id="btnAddTask" class="btn btn-primary" type="submit">Add</button>
                 </span>
             </div>
             @Html.Hidden("groupId")
         </form>
     </div>
-    <ul class="nav nav-sidebar td-t-list td-t-list-waiting">
+    <ul id="taskListWaiting" class="nav nav-sidebar td-t-list td-t-list-waiting">
         @foreach (var task in Model.TaskListWaiting)
         {
             @Html.Partial("_Task", task)
@@ -28,10 +28,42 @@
         <h3>Done list</h3>
     </div>
 
-    <ul class="nav nav-sidebar td-t-list td-t-list-done">
+    <ul id="taskListDone" class="nav nav-sidebar td-t-list td-t-list-done">
         @foreach (var task in Model.TaskListDone)
         {
             @Html.Partial("_Task", task)
         }
     </ul>
 </div>
+
+<script>
+    $(function () {
+        $('ul.td-t-list').sortable({
+            connectWith: 'ul.td-t-list',
+            placeholder: "ui-sortable-placeholder",
+            tolerance: 'pointer',
+            stop: function (event, ui) {
+                var task = ui.item;
+                var oldListId = $(this).attr('id');
+                var newListId = task.closest('ul.td-t-list').attr('id');
+
+                // if from done to waiting
+                if (oldListId != newListId && newListId == 'taskListWaiting') {
+                    task.find('input[type="checkbox"]').attr('checked', false);
+                    task.trigger(customEvents.taskStatusUpdated, true);
+                }
+
+                // if from todo to done
+                if (oldListId != newListId && newListId == 'taskListDone') {
+                    task.find('input[type="checkbox"]').attr('checked', true);
+                    task.trigger(customEvents.taskStatusUpdated, true);
+                }
+
+                // if only change sort
+                if (oldListId == newListId && newListId == 'taskListWaiting') {
+                    updateTasksOrder();
+                }
+            }
+        });
+    });
+</script>

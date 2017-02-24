@@ -104,6 +104,7 @@ input[type="checkbox"] {
 }
 
     .td-t-container .td-t-list {
+        min-height: 40px;
     }
 
 .td-t-container-waiting {
@@ -198,6 +199,49 @@ input[type="checkbox"] {
     margin-top: 15px;
     border-top: 1px solid #ddd;
 }
+
+
+.ui-sortable-placeholder {
+    height: 40px;
+    border: 4px dotted #444;
+}
+
+.ui-sortable-helper {
+    opacity: 0.7;
+}
+
+.ui-droppable-hover {
+    background-color: #f0ad4e;
+    -webkit-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.5);
+}
+
+
+
+ul.td-t-list li form,
+ul.td-g-list li form {
+    display: none;
+}
+
+ul.td-t-list li.editable-active form,
+ul.td-g-list li.editable-active form {
+    display: block;
+}
+
+ul.td-t-list li.editable-active a,
+ul.td-g-list li.editable-active a {
+    display: none;
+}
+
+ul.td-t-list li .input-group input,
+ul.td-t-list li .input-group .btn,
+ul.td-g-list li .input-group input,
+ul.td-g-list li .input-group .btn {
+    height: 40px !important;
+}
+
+
 
 
 

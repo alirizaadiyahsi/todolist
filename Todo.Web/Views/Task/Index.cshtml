@@ -12,10 +12,10 @@
 
             <div class="form-group">
                 <form action="@Url.Action("_AddGroup","Task")" method="post" id="formAddGroup">
-                    <div class="input-group input-group-sm">
+                    <div class="input-group">
                         <input type="text" class="form-control" name="groupName" id="inputGroupName" placeholder="Add a new group">
                         <span class="input-group-btn">
-                            <button id="btnAddGroup" class="btn btn-default" type="submit">Add</button>
+                            <button id="btnAddGroup" class="btn btn-warning" type="submit">Add</button>
                         </span>
                     </div>
 
@@ -72,3 +72,30 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(function () {
+
+        $('ul.td-g-list').sortable({
+            placeholder: "ui-sortable-placeholder",
+            stop: function (event, ui) {
+                updateGroupsOrder();
+            }
+        });
+
+        $('ul.td-g-list li').droppable({
+            accept: 'ul.td-t-list li',
+            tolerance: 'pointer',
+            drop: function (event, ui) {
+                var activeGroupId = $('ul.td-g-list li.active').data('group-id');
+                var droppedGroupId = $(this).data('group-id');
+                var taskId = $(ui.draggable).data('task-id');
+
+                if (activeGroupId != droppedGroupId) {
+                    updateTaskGroup(this, ui.draggable, $('ul.td-g-list li.active'));
+                }
+            }
+        });
+
+    });
+</script>

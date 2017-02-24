@@ -316,70 +316,70 @@ function selectFirstGroup() {
 }
 
 /* Sort elements */
-function sortElements(a, b) {
-    return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
-}
+//function sortElements(a, b) {
+//    return ($(b).data('sort')) < ($(a).data('sort')) ? 1 : -1;
+//}
 
 /* Update tasks order */
-function updateTasksOrder() {
-    var taskIds = $('#tasksTodoList').sortable("toArray", { attribute: 'data-task-id' });
+//function updateTasksOrder() {
+//    var taskIds = $('#tasksTodoList').sortable("toArray", { attribute: 'data-task-id' });
 
-    $.ajax({
-        url: app_root + 'Home/_UpdateTasksOrder',
-        data: { taskIds: taskIds },
-        traditional: true,
-        success: function (response) {
+//    $.ajax({
+//        url: app_root + 'Home/_UpdateTasksOrder',
+//        data: { taskIds: taskIds },
+//        traditional: true,
+//        success: function (response) {
 
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-}
-
-/* Update groups order */
-function updateGroupsOrder() {
-    var groupIds = $('#groups').sortable("toArray", { attribute: 'data-group-id' });
-
-    $.ajax({
-        url: app_root + 'Home/_UpdateGroupsOrder',
-        data: { groupIds: groupIds },
-        traditional: true,
-        success: function (response) {
-
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-}
+//        },
+//        error: function (response) {
+//            console.log(response);
+//        }
+//    });
+//}
 
 /* Update groups order */
-function updateTaskGroup(group, task, activeGroup) {
-    var groupCountsActive = $(activeGroup).find('.badge').text().split('/');
-    var groupCounts = $(group).find('.badge').text().split('/');
-    var isCompleted = $(task).find('input[type="checkbox"]').is(':checked');
+//function updateGroupsOrder() {
+//    var groupIds = $('#groups').sortable("toArray", { attribute: 'data-group-id' });
 
-    console.log(isCompleted);
+//    $.ajax({
+//        url: app_root + 'Home/_UpdateGroupsOrder',
+//        data: { groupIds: groupIds },
+//        traditional: true,
+//        success: function (response) {
 
-    $.ajax({
-        url: app_root + 'Home/_UpdateTaskGroup',
-        data: { groupId: $(group).data('group-id'), taskId: $(task).data('task-id') },
-        success: function (response) {
+//        },
+//        error: function (response) {
+//            console.log(response);
+//        }
+//    });
+//}
 
-            // group count change
-            if (isCompleted) {
-                $(activeGroup).find('.badge').html((Number(groupCountsActive[0]) - 1) + '/' + (Number(groupCountsActive[1]) - 1));
-                $(group).find('.badge').html((Number(groupCounts[0]) + 1) + '/' + (Number(groupCounts[1]) + 1));
-            } else {
-                $(activeGroup).find('.badge').html(Number(groupCountsActive[0]) + '/' + (Number(groupCountsActive[1]) - 1));
-                $(group).find('.badge').html(Number(groupCounts[0]) + '/' + (Number(groupCounts[1]) + 1));
-            }
+/* Update groups order */
+//function updateTaskGroup(group, task, activeGroup) {
+//    var groupCountsActive = $(activeGroup).find('.badge').text().split('/');
+//    var groupCounts = $(group).find('.badge').text().split('/');
+//    var isCompleted = $(task).find('input[type="checkbox"]').is(':checked');
 
-            $(task).remove();
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-}
+//    console.log(isCompleted);
+
+//    $.ajax({
+//        url: app_root + 'Home/_UpdateTaskGroup',
+//        data: { groupId: $(group).data('group-id'), taskId: $(task).data('task-id') },
+//        success: function (response) {
+
+//            // group count change
+//            if (isCompleted) {
+//                $(activeGroup).find('.badge').html((Number(groupCountsActive[0]) - 1) + '/' + (Number(groupCountsActive[1]) - 1));
+//                $(group).find('.badge').html((Number(groupCounts[0]) + 1) + '/' + (Number(groupCounts[1]) + 1));
+//            } else {
+//                $(activeGroup).find('.badge').html(Number(groupCountsActive[0]) + '/' + (Number(groupCountsActive[1]) - 1));
+//                $(group).find('.badge').html(Number(groupCounts[0]) + '/' + (Number(groupCounts[1]) + 1));
+//            }
+
+//            $(task).remove();
+//        },
+//        error: function (response) {
+//            console.log(response);
+//        }
+//    });
+//}

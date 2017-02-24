@@ -3,7 +3,9 @@
 <li class="td-t-item" id="task_@Model.Id"
     data-group-id="@Model.GroupId"
     data-task-id="@Model.Id"
-    data-delete-url="@Url.Action("_DeleteTask", "Task", new { taskId = Model.Id })">
+    data-delete-url="@Url.Action("_DeleteTask", "Task", new { taskId = Model.Id })"
+    data-status-update-url="@Url.Action("_UpdateTaskStatus", "Task", new { taskId = Model.Id })"
+    data-sort="@Model.DisplayOrder">
     <a href="javascript:void(0)">
         <input type="checkbox" @(Model.IsCompleted ? "checked" : "")>
         <span class="td-t-item-name">@Model.Name</span>
@@ -11,4 +13,14 @@
             <span aria-hidden="true">&times;</span>
         </button>
     </a>
+
+    <form class="form-task-edit" action="@Url.Action("_UpdateTask", "Task", new { taskId = Model.Id })">
+        <div class="input-group">
+            <input type="text" class="form-control" value="@Model.Name" />
+            <span class="input-group-btn">
+                <button class="btn @(Model.IsCompleted ? "btn-success" : "btn-primary") btn-save-task" type="submit">✓</button>
+                <button class="btn btn-default btn-cancel-save-task" type="button">X</button>
+            </span>
+        </div>
+    </form>
 </li>

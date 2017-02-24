@@ -71,9 +71,83 @@ namespace Todo.Web.Controllers
             return PartialView("_Task", task);
         }
 
+        public ActionResult _UpdateTask(int taskId, string name)
+        {
+            var task = _taskService.FindTask(taskId);
+
+            task.Name = name;
+            task.UpdateDate = DateTime.Now;
+            task.UpdateUserId = 0;
+
+            _unitOfWork.SaveChanges();
+
+            return PartialView("_Task", task);
+        }
+
+        public ActionResult _UpdateTaskStatus(int taskId, bool isCompleted)
+        {
+            var task = _taskService.FindTask(taskId);
+
+            task.IsCompleted = isCompleted;
+            task.UpdateDate = DateTime.Now;
+            task.UpdateUserId = 0;
+
+            _unitOfWork.SaveChanges();
+
+            return PartialView("_Task", task);
+        }
+
+        public ActionResult _UpdateTasksOrder(int[] taskIds)
+        {
+            try
+            {
+                for (int i = 0; i < taskIds.Count(); i++)
+                {
+                    var task = _taskService.FindTask(taskIds[i]);
+
+                    task.DisplayOrder = i;
+                    task.UpdateDate = DateTime.Now;
+                    task.UpdateUserId = 0;
+                }
+
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var responseModel = CreateResponse(HttpStatusCode.InternalServerError, ex.GetBaseException().Message, ResponseStatusTypes.Danger);
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult _DeleteTask(int taskId)
+        {
+            try
+            {
+                var task = _taskService.FindTask(taskId);
+
+                _taskService.DeleteTask(task);
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var responseModel = CreateResponse(HttpStatusCode.InternalServerError, ex.GetBaseException().Message, ResponseStatusTypes.Danger);
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+
+
+
         public ActionResult _GroupList()
         {
-            var groups = _taskService.GetAllGroups();
+            var groups = _taskService.GetAllGroups()
+                .OrderBy(x => x.DisplayOrder);
 
             return PartialView(groups);
         }
@@ -108,7 +182,43 @@ namespace Todo.Web.Controllers
             return PartialView("_Group", group);
         }
 
-        // TODO: Update group
+        public ActionResult _UpdateGroup(int groupId, string name)
+        {
+            var group = _taskService.FindGroup(groupId);
+
+            group.Name = name;
+            group.UpdateDate = DateTime.Now;
+            group.UpdateUserId = 0;
+
+            _unitOfWork.SaveChanges();
+
+            return PartialView("_Group", group);
+        }
+
+        public ActionResult _UpdateGroupsOrder(int[] groupIds)
+        {
+            try
+            {
+                for (int i = 0; i < groupIds.Count(); i++)
+                {
+                    var group = _taskService.FindGroup(groupIds[i]);
+
+                    group.DisplayOrder = i;
+                    group.UpdateDate = DateTime.Now;
+                    group.UpdateUserId = 0;
+                }
+
+                _unitOfWork.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var responseModel = CreateResponse(HttpStatusCode.InternalServerError, ex.GetBaseException().Message, ResponseStatusTypes.Danger);
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult _DeleteGroup(int groupId)
         {
