@@ -34,7 +34,6 @@ namespace Todo.Web.Controllers
     [Authorize]
     public class AuthorizedController : BaseController
     {
-        protected CurrentUser CurrentUser = CustomMembership.CurrentUser();
     }
 
     public class PublicController : BaseController

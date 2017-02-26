@@ -13,10 +13,12 @@ namespace Todo.Web.Controllers
     public class TaskController : AuthorizedController
     {
         private readonly TaskService _taskService;
+        private CurrentUser _currentUser;
 
         public TaskController()
         {
             _taskService = _unitOfWork.TaskService;
+            _currentUser = CustomMembership.CurrentUser();
         }
 
         public ActionResult Index()
@@ -53,7 +55,7 @@ namespace Todo.Web.Controllers
                 DisplayOrder = lastTask.DisplayOrder + 1,
                 GroupId = groupId,
                 InsertDate = DateTime.Now,
-                InsertUserId = CurrentUser.Id,
+                InsertUserId = _currentUser.Id,
                 IsCompleted = false,
                 Name = taskName
             };
@@ -151,7 +153,7 @@ namespace Todo.Web.Controllers
         public ActionResult _GroupList()
         {
             var groups = _taskService.GetAllGroups()
-                .Where(x => x.UserId == CurrentUser.Id)
+                .Where(x => x.UserId == _currentUser.Id)
                 .OrderBy(x => x.DisplayOrder);
 
             return PartialView(groups);
@@ -161,7 +163,7 @@ namespace Todo.Web.Controllers
         public ActionResult _AddGroup(string groupName)
         {
             var lastGroup = _taskService.GetAllGroups()
-                .Where(x => x.UserId == CurrentUser.Id)
+                .Where(x => x.UserId == _currentUser.Id)
                 .OrderByDescending(x => x.DisplayOrder)
                 .FirstOrDefault() ?? new tblGroup();
 
@@ -169,8 +171,8 @@ namespace Todo.Web.Controllers
             {
                 DisplayOrder = lastGroup.DisplayOrder + 1,
                 InsertDate = DateTime.Now,
-                InsertUserId = CurrentUser.Id,
-                UserId = CurrentUser.Id,
+                InsertUserId = _currentUser.Id,
+                UserId = _currentUser.Id,
                 Name = groupName
             };
 
