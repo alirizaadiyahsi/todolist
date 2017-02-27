@@ -90,6 +90,10 @@ $(document).on('click', '#btnAddGroup', function () {
         success: function (result) {
             $('ul.td-g-list').append($(result));
             $('#inputGroupName').val('');
+            if ($("ul.td-g-list li").length == 1) {
+                $("ul.td-g-list").find("li:last")
+                    .trigger(customEvents.groupActivated);
+            }
         },
         error: function (result) {
             console.log(result);

@@ -34,6 +34,19 @@ namespace Todo.Web.Controllers
     [Authorize]
     public class AuthorizedController : BaseController
     {
+        protected CurrentUser _currentUser;
+
+        public AuthorizedController()
+        {
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                _currentUser = CustomMembership.CurrentUser();
+            }
+            else
+            {
+                _currentUser = new CurrentUser();
+            }
+        }
     }
 
     public class PublicController : BaseController

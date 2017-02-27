@@ -14,7 +14,7 @@
 
 <hr />
 
-<form action="@Url.Action("Login", "Account")" method="post">
+<form action="@Url.Action("Login", "Account", new { returnUrl = ViewBag.ReturnUrl })" method="post">
 
     <div class="form-horizontal">
         <div class="form-group">

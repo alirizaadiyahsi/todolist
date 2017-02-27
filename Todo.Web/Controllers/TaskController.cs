@@ -13,12 +13,10 @@ namespace Todo.Web.Controllers
     public class TaskController : AuthorizedController
     {
         private readonly TaskService _taskService;
-        private CurrentUser _currentUser;
 
         public TaskController()
         {
             _taskService = _unitOfWork.TaskService;
-            _currentUser = CustomMembership.CurrentUser();
         }
 
         public ActionResult Index()
